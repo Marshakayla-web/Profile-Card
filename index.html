@@ -6,7 +6,7 @@
   <style>
     body {
       font-family: Arial, sans-serif;
-      background: #ffe6f0; /* pink soft */
+      background: #ffe6f0; /* soft pink */
       margin: 0;
       padding: 0;
       display: flex;
@@ -19,7 +19,7 @@
     .profile-card {
       text-align: center;
       background: #fff;
-      padding: 20px;
+      padding: 30px 25px;
       border-radius: 20px;
       box-shadow: 0 4px 15px rgba(0,0,0,0.15);
       position: relative;
@@ -27,32 +27,19 @@
     }
 
     .profile-pic {
-      position: relative;
-      display: inline-block;
+      margin-bottom: 15px;
     }
 
     .profile-pic img {
-      width: 120px;
-      height: 120px;
+      width: 150px;
+      height: 150px;
       border-radius: 50%;
-      border: 4px solid pink;
-    }
-
-    .profile-pic .decor {
-      position: absolute;
-      bottom: -10px;
-      right: -10px;
-      font-size: 26px;
-      animation: bounce 2s infinite alternate;
-    }
-
-    @keyframes bounce {
-      0% { transform: translateY(0); }
-      100% { transform: translateY(-6px); }
+      border: 5px solid pink;
+      object-fit: cover;
     }
 
     h2 {
-      margin: 15px 0 10px;
+      margin: 10px 0 20px;
       color: #ff4da6;
     }
 
@@ -62,9 +49,10 @@
       text-decoration: none;
       background: #ff99cc;
       color: white;
-      padding: 8px 14px;
+      padding: 10px 18px;
       border-radius: 12px;
       transition: 0.3s;
+      font-weight: bold;
     }
 
     .links a:hover {
@@ -79,7 +67,7 @@
       width: 100%;
       height: 100%;
       background: #fff0f5;
-      padding: 40px;
+      padding: 40px 20px;
       transition: right 0.5s ease;
       overflow-y: auto;
       z-index: 1;
@@ -118,7 +106,6 @@
   <div class="profile-card">
     <div class="profile-pic">
       <img src="foto.jpg" alt="Foto Profil">
-      <span class="decor">🍓💖</span>
     </div>
     <h2>Marsha Kayla Maulida</h2>
     <div class="links">
@@ -152,4 +139,49 @@
         panelSub.textContent = 'Sedikit cerita tentang aku ✨';
         panelContent.innerHTML = `
           <p>
-            Hi
+            Hi! Aku <strong>Marsha Kayla Maulida</strong> 👋<br>
+            🌸 Mahasiswa TI semester 5 yang lagi belajar jadi calon web developer.<br>
+            💻 Lagi sering mainan HTML, CSS, sama JS biar bisa bikin website kece.<br>
+            ✨ Tujuanku: jadi web developer profesional dan terus belajar hal baru di dunia teknologi 🦋
+          </p>
+          <div style="margin-top:12px;">
+            <strong>Skill:</strong>
+            <div class="skills">
+              <span class="chip">HTML</span>
+              <span class="chip">CSS</span>
+              <span class="chip">JavaScript</span>
+              <span class="chip">MATLAB</span>
+            </div>
+          </div>
+        `;
+      } else if(type === 'github'){
+        panelTitle.textContent = 'GitHub';
+        panelSub.textContent = 'Link & ringkasan project';
+        panelContent.innerHTML = `
+          <p>
+            Kamu bisa lihat projectku di GitHub:<br>
+            <a href="https://github.com/Marshakayla-web" target="_blank">github.com/Marshakayla-web</a>
+          </p>
+        `;
+      } else if(type === 'projects'){
+        panelTitle.textContent = 'Projects';
+        panelSub.textContent = 'Beberapa project yang pernah aku bikin';
+        panelContent.innerHTML = `
+          <ol>
+            <li><strong>Profile Card</strong> — responsive card & slide animation</li>
+            <li><strong>Calculator GUI (MATLAB)</strong> — soal medan listrik</li>
+            <li><strong>Simple Blog</strong> — belajar HTML + CSS</li>
+          </ol>
+        `;
+      }
+      stage.classList.add('show');
+    }
+
+    aboutLink.addEventListener('click', e => { e.preventDefault(); showPanel('about'); });
+    githubLink.addEventListener('click', e => { e.preventDefault(); showPanel('github'); });
+    projectsLink.addEventListener('click', e => { e.preventDefault(); showPanel('projects'); });
+    closeBtn.addEventListener('click', () => stage.classList.remove('show'));
+  </script>
+
+</body>
+</html>
