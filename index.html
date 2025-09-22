@@ -1,96 +1,155 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Profile Card</title>
   <style>
     body {
+      font-family: Arial, sans-serif;
+      background: #ffe6f0; /* pink soft */
+      margin: 0;
+      padding: 0;
       display: flex;
       justify-content: center;
       align-items: center;
       height: 100vh;
-      background: linear-gradient(180deg, #ff9ecb, #ffb6e0);
-      font-family: 'Segoe UI', sans-serif;
-      margin: 0;
+      overflow: hidden;
     }
 
-    .card {
-      background: #fff0f5;
-      width: 320px;
-      border-radius: 20px;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    .profile-card {
       text-align: center;
-      padding: 25px;
-      transition: transform 0.3s ease;
+      background: #fff;
+      padding: 20px;
+      border-radius: 20px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+      position: relative;
+      z-index: 2;
     }
 
-    .card:hover {
-      transform: translateY(-8px) scale(1.05);
-    }
-
-    .card img {
-      width: 110px;
-      height: 110px;
-      border-radius: 50%;
-      border: 4px solid #ff69b4; 
-      margin-top: 10px;
-      object-fit: cover;
-    }
-
-    .card h2 {
-      margin: 15px 0 5px;
-      font-size: 24px;
-      color: #ff1493; 
-    }
-
-    .card p {
-      color: #666; 
-      font-size: 15px;
-      margin-bottom: 20px;
-    }
-
-    .socials {
-      display: flex;
-      justify-content: center;
-      gap: 15px;
-    }
-
-    .socials a {
+    .profile-pic {
+      position: relative;
       display: inline-block;
-      padding: 10px 15px;
-      border-radius: 10px;
-      background: #ff69b4;
-      color: #fff;
-      font-size: 14px;
+    }
+
+    .profile-pic img {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      border: 4px solid pink;
+    }
+
+    .profile-pic .decor {
+      position: absolute;
+      bottom: -10px;
+      right: -10px;
+      font-size: 26px;
+      animation: bounce 2s infinite alternate;
+    }
+
+    @keyframes bounce {
+      0% { transform: translateY(0); }
+      100% { transform: translateY(-6px); }
+    }
+
+    h2 {
+      margin: 15px 0 10px;
+      color: #ff4da6;
+    }
+
+    .links a {
+      display: inline-block;
+      margin: 8px;
       text-decoration: none;
-      transition: background 0.3s, transform 0.2s;
+      background: #ff99cc;
+      color: white;
+      padding: 8px 14px;
+      border-radius: 12px;
+      transition: 0.3s;
     }
 
-    .socials a:hover {
-      background: #ff1493; 
-      transform: scale(1.05); 
+    .links a:hover {
+      background: #ff66b2;
     }
 
-    /* Responsive */
-    @media (max-width: 400px) {
-      .card {
-        width: 90%;
-        padding: 20px;
-      }
+    /* Panel slide */
+    .stage {
+      position: fixed;
+      top: 0;
+      right: -100%;
+      width: 100%;
+      height: 100%;
+      background: #fff0f5;
+      padding: 40px;
+      transition: right 0.5s ease;
+      overflow-y: auto;
+      z-index: 1;
+    }
+
+    .stage.show {
+      right: 0;
+    }
+
+    .stage h2 {
+      color: #ff3399;
+    }
+
+    .skills .chip {
+      display: inline-block;
+      margin: 4px;
+      padding: 6px 12px;
+      background: #ffb6c1;
+      border-radius: 12px;
+      font-size: 14px;
+      color: #fff;
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 15px;
+      right: 20px;
+      font-size: 24px;
+      cursor: pointer;
+      color: #ff3399;
     }
   </style>
 </head>
 <body>
-  <div class="card">
-    <img src="https://avatars.githubusercontent.com/u/233753974?v=4" 
-     alt="Marsha Kayla Maulida" 
-     style="width: 150px; height: 150px; border-radius: 50%;">
+
+  <div class="profile-card">
+    <div class="profile-pic">
+      <img src="foto.jpg" alt="Foto Profil">
+      <span class="decor">🍓💖</span>
+    </div>
     <h2>Marsha Kayla Maulida</h2>
-    <p>Mahasiswa Teknik Informatika | Web Developer Enthusiast</p>
-    <div class="socials">
-      <a href="https://github.com/Marshakayla-web" target="_blank">GitHub</a>
+    <div class="links">
+      <a href="#" id="aboutLink">About Me</a>
+      <a href="#" id="githubLink">GitHub</a>
+      <a href="#" id="projectsLink">Projects</a>
     </div>
   </div>
-</body>
-</html>
+
+  <!-- Panel Slide -->
+  <div class="stage" id="stage">
+    <span class="close-btn" id="closeBtn">&times;</span>
+    <h2 id="panelTitle"></h2>
+    <p id="panelSub"></p>
+    <div id="panelContent"></div>
+  </div>
+
+  <script>
+    const aboutLink = document.getElementById('aboutLink');
+    const githubLink = document.getElementById('githubLink');
+    const projectsLink = document.getElementById('projectsLink');
+    const stage = document.getElementById('stage');
+    const panelTitle = document.getElementById('panelTitle');
+    const panelSub = document.getElementById('panelSub');
+    const panelContent = document.getElementById('panelContent');
+    const closeBtn = document.getElementById('closeBtn');
+
+    function showPanel(type){
+      if(type === 'about'){
+        panelTitle.textContent = 'About Me';
+        panelSub.textContent = 'Sedikit cerita tentang aku ✨';
+        panelContent.innerHTML = `
+          <p>
+            Hi
