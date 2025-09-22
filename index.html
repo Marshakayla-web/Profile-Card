@@ -1,189 +1,97 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Profile Card</title>
-  <style>
-    body {
-      font-family: 'Segoe UI', sans-serif;
-      background: linear-gradient(180deg, #ff9ecb, #ffb6e0);
-      margin: 0;
-      padding: 0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      overflow: hidden;
-    }
+<html lang="id">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Profile Card</title>
+        <style>
+            body {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100vh;
+                background: linear-gradient(180deg, #ff9ecb, #ffb6e0);
+                font-family: 'Segoe UI', sans-serif;
+                margin= 0;
+            }
 
-    .profile-card {
-      text-align: center;
-      background: #fff0f5;
-      padding: 30px 25px;
-      border-radius: 20px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.15);
-      position: relative;
-      z-index: 2;
-    }
+            .card {
+               background: #fff0f5;
+               width: 320px;
+               border-radius: 2opx;
+               box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+               text-align: center;
+               padding: 25px;
+               transition: transform 0.3s ease;
+            }
 
-    .profile-pic {
-      margin-bottom: 15px;
-    }
+            .card.hover {
+                transform: translateY(-8px) scale(1.05);
+            }
 
-    .profile-pic img {
-      width: 150px;
-      height: 150px;
-      border-radius: 50%;
-      border: 4px solid #ff69b4;
-      object-fit: cover;
-    }
+            .card img {
+               width: 110px;
+               height: 110px;
+               border-radius: 50%;
+               border: 4px solid #ff69b4; 
+               margin-top: 10px;
+               object-fit: cover;
+            }
 
-    h2 {
-      margin: 10px 0 20px;
-      color: #ff1493;
-    }
+            .card h2 {
+               margin: 15px 0 5px;
+               font-size: 24px;
+               color: #ff1493; 
+            }
 
-    .links a {
-      display: inline-block;
-      margin: 8px;
-      text-decoration: none;
-      background: #ff99cc;
-      color: white;
-      padding: 10px 18px;
-      border-radius: 12px;
-      transition: 0.3s;
-      font-weight: bold;
-    }
+           .card p {
+               color: #666; 
+               font-size: 15px;
+               margin-bottom: 20px;
+            }
 
-    .links a:hover {
-      background: #ff66b2;
-    }
+            .socials {
+               display: flex;
+               justify-content: center;
+               gap: 15px;
+            }
 
-    /* Panel slide */
-    .stage {
-      position: fixed;
-      top: 0;
-      right: -100%;
-      width: 100%;
-      height: 100%;
-      background: #fff0f5;
-      padding: 40px 20px;
-      transition: right 0.5s ease;
-      overflow-y: auto;
-      z-index: 1;
-    }
+            .socials a {
+               display: inline-block;
+               padding: 10px 15px;
+               border-radius: 10px;
+               background: #ff69b4;
+               color: #fff;
+               font-size: 14px;
+               text-decoration: none;
+               transition: background 0.3s, transform 0.2s;
+            }
 
-    .stage.show {
-      right: 0;
-    }
+            .socials a:hover {
+               background: #ff1493; 
+               transform: scale(1.05); 
+            }
 
-    .stage h2 {
-      color: #ff3399;
-    }
-
-    .skills .chip {
-      display: inline-block;
-      margin: 4px;
-      padding: 6px 12px;
-      background: #ffb6c1;
-      border-radius: 12px;
-      font-size: 14px;
-      color: #fff;
-    }
-
-    .close-btn {
-      position: absolute;
-      top: 15px;
-      right: 20px;
-      font-size: 24px;
-      cursor: pointer;
-      color: #ff3399;
-    }
-  </style>
-</head>
-<body>
-
-  <div class="profile-card">
-    <div class="profile-pic">
-      <img src="https://avatars.githubusercontent.com/u/233753974?v=4" 
+            /* Responsive */
+               @media (max-width: 400px) {
+            .card {
+               width: 90%;
+               padding: 20px;
+              }
+            }
+            </style>
+        </head>
+    </body>
+    <div class="card">
+        <img src="https://avatars.githubusercontent.com/u/233753974?v=4"
      alt="Marsha Kayla Maulida" 
      style="width: 150px; height: 150px; border-radius: 50%;">
-    </div>
-    <h2>Marsha Kayla Maulida</h2>
-    <div class="links">
-      <a href="#" id="aboutLink">About Me</a>
-      <a href="#" id="githubLink">GitHub</a>
-      <a href="#" id="projectsLink">Projects</a>
-    </div>
-  </div>
-
-  <!-- Panel Slide -->
-  <div class="stage" id="stage">
-    <span class="close-btn" id="closeBtn">&times;</span>
-    <h2 id="panelTitle"></h2>
-    <p id="panelSub"></p>
-    <div id="panelContent"></div>
-  </div>
-
-  <script>
-    const aboutLink = document.getElementById('aboutLink');
-    const githubLink = document.getElementById('githubLink');
-    const projectsLink = document.getElementById('projectsLink');
-    const stage = document.getElementById('stage');
-    const panelTitle = document.getElementById('panelTitle');
-    const panelSub = document.getElementById('panelSub');
-    const panelContent = document.getElementById('panelContent');
-    const closeBtn = document.getElementById('closeBtn');
-
-    function showPanel(type){
-      if(type === 'about'){
-        panelTitle.textContent = 'About Me';
-        panelSub.textContent = 'Sedikit cerita tentang aku ✨';
-        panelContent.innerHTML = `
-          <p>
-            Hi! Aku <strong>Marsha Kayla Maulida</strong> 👋<br>
-            🌸 Mahasiswa TI semester 5 yang lagi belajar jadi calon web developer.<br>
-            💻 Lagi sering mainan HTML, CSS, sama JS biar bisa bikin website kece.<br>
-            ✨ Tujuanku: jadi web developer profesional dan terus belajar hal baru di dunia teknologi 🦋
-          </p>
-          <div style="margin-top:12px;">
-            <strong>Skill:</strong>
-            <div class="skills">
-              <span class="chip">HTML</span>
-              <span class="chip">CSS</span>
-              <span class="chip">JavaScript</span>
-              <span class="chip">MATLAB</span>
+        <h2>Marsha Kayla Maulida</h2>
+        <p>Mahasiswa Teknik Informatika | Web Developer Enthusiast</p>
+        <div class="socials">
+            <a href="https://github.com/Marshakayla-web" target="_blank">GitHub</a>
             </div>
-          </div>
-        `;
-      } else if(type === 'github'){
-        panelTitle.textContent = 'GitHub';
-        panelSub.textContent = 'Link & ringkasan project';
-        panelContent.innerHTML = `
-          <p>
-            Kamu bisa lihat projectku di GitHub:<br>
-            <a href="https://github.com/Marshakayla-web" target="_blank">github.com/Marshakayla-web</a>
-          </p>
-        `;
-      } else if(type === 'projects'){
-        panelTitle.textContent = 'Projects';
-        panelSub.textContent = 'Beberapa project yang pernah aku bikin';
-        panelContent.innerHTML = `
-          <ol>
-            <li><strong>Profile Card</strong> — responsive card & slide animation</li>
-            <li><strong>Calculator GUI (MATLAB)</strong> — soal medan listrik</li>
-            <li><strong>Simple Blog</strong> — belajar HTML + CSS</li>
-          </ol>
-        `;
-      }
-      stage.classList.add('show');
-    }
-
-    aboutLink.addEventListener('click', e => { e.preventDefault(); showPanel('about'); });
-    githubLink.addEventListener('click', e => { e.preventDefault(); showPanel('github'); });
-    projectsLink.addEventListener('click', e => { e.preventDefault(); showPanel('projects'); });
-    closeBtn.addEventListener('click', () => stage.classList.remove('show'));
-  </script>
-
+    </div>
 </body>
 </html>
+
